@@ -2,14 +2,20 @@ import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import COLORS from "../const/Colors";
 
-const Input = ({label}) => {
+const Input = ({label, ...props}) => {
 
     return(
         <View style={styles.formContainer}>
+
             <Text style={styles.inputLabel}>{label}</Text>
 
             <View style={styles.imputContainer}>
-                <TextInput style={styles.TextInput} autoCorrect={false}/>
+
+                <TextInput style={styles.TextInput} 
+                    autoCorrect={false}
+                    {...props}    
+                />
+                
             </View>
         </View>
     )

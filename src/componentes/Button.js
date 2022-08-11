@@ -3,10 +3,14 @@ import {TouchableOpacity, StyleSheet, Text } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import COLORS from "../const/Colors";
 
-const Button = ({title}) => {
+const Button = ({title, onPress=()=>{}}) => {
     
     return(
-        <TouchableOpacity style={styles.button} activeOpacity={1}>
+        <TouchableOpacity 
+            style={styles.button} 
+            activeOpacity={0.6}
+            onPress={onPress}
+        >
             <Text style={styles.titleButton}>{title}</Text>
         </TouchableOpacity>
     );
