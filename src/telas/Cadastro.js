@@ -34,6 +34,15 @@ const Cadastro = ()=>{
   }
 
   // VALIDAÇÃO DOS DADOS DE CADASTRO
+
+  // state de erro de preenchimento
+  const [errors, setErrors] = React.useState({});
+
+  // funçao handler que configura as mensagens de erro na state
+  const handlerErros = (errorMesage, input)=>{
+    setErrors((prevState)=>({...prevState, [input]:errorMesage}));
+  }
+
   // function de validação
   const validate = () => {
 
@@ -41,17 +50,17 @@ const Cadastro = ()=>{
 
     if (!inputs.titulo) {
       validate = false
-      console.log('CAMPO VAZIO');
+      handlerErros('Informe o título do livro.', 'titulo');
     }
 
     if (!inputs.descricao) {
       validate = false
-      console.log('CAMPO VAZIO');
+      handlerErros('Informe a descrição do livro.', 'descricao');
     }
 
     if (!inputs.capa) {
       validate = false
-      console.log('CAMPO VAZIO');
+      handlerErros('Informe a capa do livro.', 'capa');
     }
 
   }
@@ -72,15 +81,21 @@ const Cadastro = ()=>{
 
             <Input 
               label="TÍTULO" 
+              error={errors.titulo}
+              onFocus={()=>{handlerErros(null, 'titulo')}}
               onChangeText={(text)=>handlerOnChange(text, 'titulo')}
             />
             
             <Input 
               label="DESCRIÇÃO"
+              error={errors.descricao}
+              onFocus={()=>{handlerErros(null, 'descricao')}}
               onChangeText={(text)=>handlerOnChange(text, 'descricao')}
             />
             <Input 
               label="CAPA"
+              error={errors.capa}
+              onFocus={()=>{handlerErros(null, 'capa')}}
               onChangeText={(text)=>handlerOnChange(text, 'capa')}
             />
 
