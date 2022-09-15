@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, SafeAreaView, ScrollView  } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView,   } from "react-native";
 import Input from "../componentes/Input";
 import Button from "../componentes/Button";
 import COLORS from "../const/Colors";
+import apiLivraria from "../services/apiLivraria";
 
 const Cadastro = ()=>{
 
@@ -63,6 +64,25 @@ const Cadastro = ()=>{
       handlerErros('Informe a capa do livro.', 'capa');
     }
 
+    if(validate){
+      //ENVIA OS DADOS PARA A API CADASTRAR.
+      cadastrar();
+      console.log('CADASTROU');
+    }
+
+  }
+
+  const cadastrar = () => {
+      
+    try {
+      const response = apiLivraria.post('/cadastrarLivro', {
+        'titulo': inputs.titulo,
+        'descricao': inputs.descricao,
+        'imagem': inputs.capa
+      });
+    } catch (error) {
+      
+    }
   }
 
   
@@ -80,7 +100,8 @@ const Cadastro = ()=>{
           <View style={styles.viewForm}>
 
             <Input 
-              label="TÍTULO" 
+              label="TÍTULO"
+              iconName= "book-outline"
               error={errors.titulo}
               onFocus={()=>{handlerErros(null, 'titulo')}}
               onChangeText={(text)=>handlerOnChange(text, 'titulo')}
@@ -88,12 +109,14 @@ const Cadastro = ()=>{
             
             <Input 
               label="DESCRIÇÃO"
+              iconName="card-text-outline"
               error={errors.descricao}
               onFocus={()=>{handlerErros(null, 'descricao')}}
               onChangeText={(text)=>handlerOnChange(text, 'descricao')}
             />
             <Input 
               label="CAPA"
+              iconName="image-outline"
               error={errors.capa}
               onFocus={()=>{handlerErros(null, 'capa')}}
               onChangeText={(text)=>handlerOnChange(text, 'capa')}
@@ -101,7 +124,7 @@ const Cadastro = ()=>{
 
             <Button 
               title={"CADASTRAR"}
-              onPress={validate}
+              onPress={validate}  
             />
 
           </View>
