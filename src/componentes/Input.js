@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 import COLORS from "../const/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const Input = ({label, error, onFocus=()=>{}, iconName, ...props }) => {
+const Input = ({label, error, onFocus=()=>{}, iconName, value, ...props}) => {
 
     return(
         <View style={styles.formContainer}>
@@ -18,6 +18,7 @@ const Input = ({label, error, onFocus=()=>{}, iconName, ...props }) => {
                 style={styles.TextInput} 
                     autoCorrect={false}
                     onFocus={()=>{onFocus()}}
+                    value={value}
                     {...props}    
                 />
                 

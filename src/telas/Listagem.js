@@ -6,32 +6,46 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  TouchableOpacity
 } from 'react-native';
 import COLORS from '../const/Colors';
 import apiLivraria from '../services/apiLivraria';
 
 import img150 from '../assets/books/lor150.png';
-import {useEffect, useState} from 'react';
 
-const Listagem = () => {
+const Listagem = ({navigation}) => {
 
     const [livros, setLivros] = useState([]);
     
-    useEffect( () => {
+    useEffect( 
+      () => {
         apiLivraria.get('/listarLivros')
-            .then(
+        .then(
                 (data)=>{
-                    console.log(data);
+                  setLivros(data.data)
                 }
-            ));
-    }
+        )
+      },
+      []
+    );
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.post}>
-          <Image style={styles.imagem} source={img150} />
-          <Text style={styles.titulo}>O Senhor dos Aneis</Text>
-        </View>
+          {
+            livros.map(
+              livro => (
+                <TouchableOpacity
+                  key={livro.cod_livro}
+                  style={styles.post}
+                  onPress={()=>navigation.navigate('Detalhes', {cod_livro: livro.cod_livro})}>
+                  <View style={styles.postContainer}>
+                    <Image style={styles.imagem} source={img150} />
+                    <Text style={styles.titulo} >{livro.titulo}</Text>
+                  </View>
+                </TouchableOpacity>
+              ) 
+            )
+          }
       </View>
     </ScrollView>
   );
@@ -40,16 +54,31 @@ const Listagem = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: COLORS.black,
+    backgroundColor: COLORS.white,
   },
   post: {
-    width: '95%',
+    width: '90%',
     alignItems: 'center',
-    backgroundColor: COLORS.gray,
-    padding: 15,
+    backgroundColor: COLORS.back,
+    padding: 10,
     marginVertical: 5,
     borderRadius: 5,
     elevation: 5,
+    borderWidth: 5,
+    borderColor: COLORS.black,
+    borderRadius: 15
+  },
+  postContainer: {
+    width: '95%',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+   //elevation: 5,
+    //borderWidth: 5,
+    //borderColor: COLORS.black,
+    borderRadius: 15
   },
   imagem: {
     borderRadius: 5,
@@ -58,8 +87,9 @@ const styles = StyleSheet.create({
   },
   titulo: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: COLORS.black
   },
 });
 

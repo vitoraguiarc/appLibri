@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, StyleSheet, SafeAreaView, ScrollView,   } from "react-native";
 import Input from "../componentes/Input";
 import Button from "../componentes/Button";
 import COLORS from "../const/Colors";
 import apiLivraria from "../services/apiLivraria";
 
-const Cadastro = ()=>{
+const Editar = ({route, navigation})=>{
 
   // CAPTURA DE DADOS COM USO DE STATE
 
@@ -17,6 +17,20 @@ const Cadastro = ()=>{
     descricao: '',
     capa: '',
   });
+
+  const {cod_livro} = route.params
+
+  useEffect(
+    ()=>{
+      apiLivraria.get(`/listarLivros/${cod_livro}`)
+      .then(
+        (data)=>{
+          setInputs(data.data[0])
+        }
+      )
+    },
+    []
+  );
 
   //function que manipula a entrada de dados na state no metódo onChangeText
   const handlerOnChange = (text, input) => {
@@ -66,20 +80,22 @@ const Cadastro = ()=>{
 
     if(validate){
       //ENVIA OS DADOS PARA A API CADASTRAR.
-      cadastrar();
-      console.log('CADASTROU');
+      editar();
+      console.log('EDITOU');
     }
 
   }
 
-  const cadastrar = () => {
+  const editar = () => {
       
     try {
-      const response = apiLivraria.post('/cadastrarLivro', {
-        'titulo': inputs.titulo,
-        'descricao': inputs.descricao,
-        'imagem': inputs.capa
+      const response = apiLivraria.put('/alterarLivro', {
+        titulo: inputs.titulo,
+        descricao: inputs.descricao,
+        imagem: inputs.capa,
+        cod_livro: inputs.cod_livro
       });
+      navigation.goBack();
     } catch (error) {
       
     }
@@ -94,7 +110,7 @@ const Cadastro = ()=>{
         <ScrollView style={styles.scroll}>
 
           <Text style={styles.title}>
-            CADASTRO DE LIVRO 
+            EDIÇÃO DE LIVRO 
           </Text>
 
           <View style={styles.viewForm}>
@@ -104,6 +120,7 @@ const Cadastro = ()=>{
               iconName= "book-outline"
               error={errors.titulo}
               onFocus={()=>{handlerErros(null, 'titulo')}}
+              value={inputs.titulo}
               onChangeText={(text)=>handlerOnChange(text, 'titulo')}
             />
             
@@ -112,6 +129,7 @@ const Cadastro = ()=>{
               iconName="card-text-outline"
               error={errors.descricao}
               onFocus={()=>{handlerErros(null, 'descricao')}}
+              value={inputs.descricao}
               onChangeText={(text)=>handlerOnChange(text, 'descricao')}
             />
             <Input 
@@ -119,11 +137,12 @@ const Cadastro = ()=>{
               iconName="image-outline"
               error={errors.capa}
               onFocus={()=>{handlerErros(null, 'capa')}}
+              value={inputs.capa}
               onChangeText={(text)=>handlerOnChange(text, 'capa')}
             />
 
             <Button 
-              title={"CADASTRAR"}
+              title={"EDITAR"}
               onPress={validate}  
             />
 
@@ -156,4 +175,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Cadastro;
+export default Editar;

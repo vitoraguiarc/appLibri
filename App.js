@@ -1,32 +1,30 @@
 import React from "react";
-import { StyleSheet  } from "react-native";
+import {View, Text, Button} from 'react-native'
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Login from "./src/telas/Login";
 import Cadastro from "./src/telas/Cadastro";
 import Listagem from "./src/telas/Listagem";
+import {Detalhes} from "./src/telas/Detalhes";
+import Editar from "./src/telas/Editar";
+const Stack = createNativeStackNavigator();
 
 const App = ()=>{
 
   return(
-    //<Cadastro/>
-    <Listagem/>
+
+    <NavigationContainer>
+      <Stack.Navigator>
+        {/* <Stack.Screen name="Cadastro" component={Cadastro} options={{headerShown: false}}/> */}
+        <Stack.Screen name="Listagem" component={Listagem} options={{title: 'Listagem de Livros'}}/>
+        <Stack.Screen name="Detalhes" component={Detalhes} options={{title: 'Detalhes de Livros'}}/>
+        <Stack.Screen name="Editar" component={Editar} options={{title: 'Edição de Livros'}}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+    // <Detalhes/>
+    
   );
 
 }
-
-const style = StyleSheet.create({
-  container:{},
-  title:{
-    width: "100%",
-    backgroundColor: "#F00",
-    textAlign: "center",
-    fontSize: 16,
-    lineHeight: 26,
-    color: "#FFF",
-    fontWeight: "bold",
-    padding: 16,
-    
-  },
-});
 
 export default App;
